@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}My Files{% endblock %}</h1>
+  {% if g.user %}
+    <a class="action" href="{{ url_for('files.create') }}">New</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% for file in files %}
+    <article class="post">
+      <header>
+        <div>
+          <h1>{{ file['friendly_title'] }}</h1>
+          <div class="about">by {{ file['username'] }} on {{ file['created'].strftime('%Y-%m-%d') }}</div>
+        </div>
+        {% if g.user['id'] == file['author_id'] %}
+          <a class="action" href="{{ url_for('files.update', id=file['id']) }}">Edit</a>
+          <a class="action" href="{{ url_for('files.download', id=file['id']) }}">Download</a>
+        {% endif %}
+      </header>
+      {#<p class="body">{{ post['body'] }}</p>#}
+    </article>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Edit "{{ file['friendly_title'] }}"{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post" enctype="multipart/form-data">
+    <label for="friendly_title">Title</label>
+    <input name="friendly_title" id="friendly_title" value="{{ request.form['friendly_title'] or file['friendly_title'] }}" required>
+    <label for="file">File</label>
+    <input name="file" type="file" id="file">{{ request.form['file'] or file['contents'] }}</input>
+    <input type="submit" value="Save">
+  </form>
+  <a href="{{ url_for('index') }}">Cancel</a>
+  <hr>
+  <form action="{{ url_for('files.delete', id=file['id']) }}" method="post">
+    <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+  </form>
+{% endblock %}
