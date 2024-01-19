@@ -35,6 +35,7 @@ def load_logged_in_user():
     the database into ``g.user``."""
     user_id = session.get("user_id")
 
+    # TODO: this is proven to be prone to session re-use (copy a known cookie and try using it again even after logout)
     if user_id is None:
         g.user = None
     elif isinstance(user_id, int):
