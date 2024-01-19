@@ -24,7 +24,9 @@ def index():
     files = db.execute(
         "SELECT f.id, f.friendly_title, f.contents, f.created, f.author_id, u.username"
         " FROM file f JOIN user u ON f.author_id = u.id"
-        " ORDER BY created DESC"
+        " WHERE u.id = ?"
+        " ORDER BY created DESC",
+        (g.user["id"],)
     ).fetchall()
 
     return render_template("files/index.html", files=files)
